@@ -43,207 +43,212 @@ button:hover { background:#2563eb; transform:translateY(-1px); }
 </head>
 <body>
 <div id="main-flex">
-    <div class="container">
-        <h1>משגר הודעות ל-Google Chat</h1>
-        <label>Webhook URL</label>
-        <input id="webhook" type="text" placeholder="https://chat.googleapis.com/v1/spaces/...">
-        <label>סוג ההודעה</label>
-        <select id="mode">
-            <option value="text">טקסט פשוט</option>
-            <option value="card" selected>כרטיס (כותרת+תמונה)</option>
-        </select>
-        <label>התנהגות לאחר שליחה</label>
-        <select id="after">
-            <option value="keep">השאר את הטופס</option>
-            <option value="clear">נקה שדות לאחר שליחה</option>
-        </select>
-
-        <div id="textArea" style="margin-top:12px">
-            <label>טקסט להודעה (טקסט פשוט)</label>
-            <textarea id="plainText"></textarea>
-        </div>
-
-        <div id="cardArea" style="margin-top:12px">
-            <label>כותרת (title)</label>
-            <input id="title" type="text" placeholder="כותרת הכרטיס">
-            <label>תת-כותרת (subtitle)</label>
-            <input id="subtitle" type="text" placeholder="תת-כותרת">
-            <label>תמונה בכותרת (header image URL)</label>
-            <input id="headerImage" type="text" 
-            value="https://github.com/shey3132/-22/blob/main/%D7%A4%D7%A8%D7%95%D7%A4%D7%99%D7%9C%20%D7%93%D7%99%D7%92%D7%99%D7%98%D7%9C%D7%99%20%D7%A2%D7%9D%20%D7%A8%D7%A9%D7%AA%20%D7%A4%D7%A2%D7%95%D7%9C%D7%94.png?raw=true">
-            <label>טקסט בכרטיס</label>
-            <textarea id="cardText" placeholder="טקסט בכרטיס..."></textarea>
-            <label>כתובות תמונה (כל כתובת בשורה חדשה)</label>
-            <textarea id="images" placeholder="https://example.com/image1.jpg"></textarea>
-            <label>פעולות (כפתורי פעולה) – כל פעולה בשורה, בפורמט: כותרת|URL</label>
-            <textarea id="actions" placeholder="Site|https://example.com"></textarea>
-            <div class="images-list" id="imagesPreview"></div>
-        </div>
-
-        <div class="flex-between">
-            <div>
-                <button id="build">בנה תצוגה מקדימה</button>
-                <button id="send" style="margin-left:8px">שלח עכשיו</button>
-            </div>
-            <div class="small muted">כרטיסי צ'אט של גוגל עם ווידג'טים של תמונה + פעולה</div>
-        </div>
-
-        <label style="margin-top:12px">תצוגה מקדימה חיה</label>
-        <div id="preview"></div>
-
-        <label style="margin-top:12px">לוג</label>
-        <pre id="log">מוכן.</pre>
-    </div>
-
-    <div id="history-container">
-        <h3>היסטורית הודעות</h3>
-        <div id="history"></div>
-    </div>
+<div class="container">
+<h1>משגר הודעות ל-Google Chat</h1>
+<label>Webhook URL</label>
+<input id="webhook" type="text" placeholder="https://chat.googleapis.com/v1/spaces/...">
+<label>סוג ההודעה</label>
+<select id="mode">
+  <option value="text">טקסט פשוט</option>
+  <option value="card" selected>כרטיס (כותרת+תמונה)</option>
+</select>
+<label style="margin-top:12px">התנהגות לאחר שליחה</label>
+<select id="after">
+  <option value="keep">השאר את הטופס</option>
+  <option value="clear">נקה שדות לאחר שליחה</option>
+</select>
+<div id="textArea" style="margin-top:12px">
+  <label>טקסט להודעה (טקסט פשוט)</label>
+  <textarea id="plainText"></textarea>
+</div>
+<div id="cardArea" style="margin-top:12px">
+  <label>כותרת (title)</label>
+  <input id="title" type="text" placeholder="כותרת הכרטיס">
+  <label>תת-כותרת (subtitle)</label>
+  <input id="subtitle" type="text" placeholder="תת-כותרת">
+  <label>תמונה בכותרת (header image URL)</label>
+  <input id="headerImage" type="text" placeholder="URL לתמונה בכותרת">
+  <label>טקסט בכרטיס</label>
+  <textarea id="cardText" placeholder="טקסט בתוך הכרטיס"></textarea>
+  <label>כתובות תמונה (כל כתובת בשורה חדשה)</label>
+  <textarea id="images" placeholder="https://example.com/image1.jpg"></textarea>
+  <label>פעולות (כפתורי פעולה) – כל פעולה בשורה, בפורמט: כותרת|URL</label>
+  <textarea id="actions" placeholder="כותרת|https://example.com"></textarea>
+  <div class="images-list" id="imagesPreview"></div>
+</div>
+<div class="flex-between">
+  <div>
+    <button id="build">בנה תצוגה מקדימה</button>
+    <button id="send" style="margin-left:8px">שלח עכשיו</button>
+  </div>
+  <div class="small muted">כרטיסי צ'אט של גוגל עם ווידג'טים של תמונה + פעולה</div>
+</div>
+<label style="margin-top:12px">תצוגה מקדימה חיה</label>
+<div id="preview"></div>
+<label style="margin-top:12px">לוג</label>
+<pre id="log">מוכן.</pre>
+</div>
+<div id="history-container">
+<h3>היסטורית הודעות</h3>
+<div id="history"></div>
+</div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', ()=>{
-    const modeEl = document.getElementById('mode');
-    const cardArea = document.getElementById('cardArea');
-    const textArea = document.getElementById('textArea');
-    const imagesEl = document.getElementById('images');
-    const imagesPreview = document.getElementById('imagesPreview');
-    const actionsEl = document.getElementById('actions');
-    const previewEl = document.getElementById('preview');
-    const logEl = document.getElementById('log');
-    const historyEl = document.getElementById('history');
+const modeEl=document.getElementById('mode');
+const cardArea=document.getElementById('cardArea');
+const textArea=document.getElementById('textArea');
+const imagesEl=document.getElementById('images');
+const imagesPreview=document.getElementById('imagesPreview');
+const previewEl=document.getElementById('preview');
+const logEl=document.getElementById('log');
+const historyEl=document.getElementById('history');
 
-    function updateVisibility() {
-        textArea.style.display = modeEl.value === 'text' ? 'block' : 'none';
-        cardArea.style.display = modeEl.value === 'card' ? 'block' : 'none';
+function updateVisibility() {
+  textArea.style.display = modeEl.value==='text'?'block':'none';
+  cardArea.style.display = modeEl.value==='card'?'block':'none';
+}
+modeEl.addEventListener('change', updateVisibility);
+updateVisibility();
+
+function renderImagesPreview(){
+  imagesPreview.innerHTML='';
+  imagesEl.value.split('\n').map(s=>s.trim()).filter(Boolean).forEach(u=>{
+    const img=document.createElement('img');
+    img.src=u;
+    img.loading='lazy';
+    imagesPreview.appendChild(img);
+  });
+}
+imagesEl.addEventListener('input', renderImagesPreview);
+renderImagesPreview();
+
+function buildPayload() {
+  if(modeEl.value==='text') return { text: document.getElementById('plainText').value.trim() || ' ' };
+  
+  const title=document.getElementById('title').value.trim();
+  const subtitle=document.getElementById('subtitle').value.trim();
+  const headerImage=document.getElementById('headerImage').value.trim() || 
+    "https://github.com/shey3132/-22/blob/main/%D7%A4%D7%A8%D7%95%D7%A4%D7%99%D7%9C%20%D7%93%D7%99%D7%92%D7%99%D7%98%D7%9C%D7%99%20%D7%A2%D7%9D%20%D7%A8%D7%A9%D7%AA%20%D7%A4%D7%A2%D7%95%D7%9C%D7%94.png?raw=true";
+  const cardText=document.getElementById('cardText').value.trim();
+  const imagesRaw=imagesEl.value.split('\n').map(s=>s.trim()).filter(Boolean);
+  const actionsRaw=document.getElementById('actions').value.split('\n').map(s=>s.trim()).filter(Boolean);
+
+  const card={};
+  if(title || subtitle || headerImage){
+    card.header={};
+    if(title) card.header.title=title;
+    if(subtitle) card.header.subtitle=subtitle;
+    if(headerImage) card.header.imageUrl=headerImage;
+  }
+
+  const widgets=[];
+  if(cardText) widgets.push({ textParagraph:{ text:cardText } });
+  imagesRaw.forEach(url => widgets.push({ image:{ imageUrl:url } }));
+  
+  card.sections=[];
+  if(widgets.length) card.sections.push({ widgets });
+  
+  actionsRaw.forEach(line=>{
+    const [text,url]=line.split('|').map(s=>s.trim());
+    if(text && url){
+      card.sections.push({ widgets:[{ buttons:[{ textButton:{ text, onClick:{ openLink:{ url } } } }] }] });
     }
+  });
 
-    modeEl.addEventListener('change', updateVisibility);
-    updateVisibility();
+  return { cards:[card] };
+}
 
-    function buildPayload(){
-        if(modeEl.value==='text') return {text:document.getElementById('plainText').value.trim()||' '};
-        const title = document.getElementById('title').value.trim();
-        const subtitle = document.getElementById('subtitle').value.trim();
-        const headerImage = document.getElementById('headerImage').value.trim() ||
-            "https://github.com/shey3132/-22/blob/main/%D7%A4%D7%A8%D7%95%D7%A4%D7%99%D7%9C%20%D7%93%D7%99%D7%92%D7%99%D7%98%D7%9C%D7%99%20%D7%A2%D7%9D%20%D7%A8%D7%A9%D7%AA%20%D7%A4%D7%A2%D7%95%D7%9C%D7%94.png?raw=true";
-        const cardText = document.getElementById('cardText').value.trim();
-        const imagesRaw = imagesEl.value.split('\n').map(s=>s.trim()).filter(Boolean);
-        const actionsRaw = actionsEl.value.split('\n').map(s=>s.trim()).filter(Boolean);
-
-        const card = {};
-        if(title || subtitle || headerImage) card.header = {};
-        if(title) card.header.title = title;
-        if(subtitle) card.header.subtitle = subtitle;
-        if(headerImage) card.header.imageUrl = headerImage;
-
-        const widgets = [];
-        if(cardText) widgets.push({textParagraph:{text:cardText}});
-        imagesRaw.forEach(u => widgets.push({image:{imageUrl:u}}));
-        card.sections = widgets.length ? [{widgets}] : [];
-
-        actionsRaw.forEach(line=>{
-            const [text,url] = line.split('|').map(s=>s.trim());
-            if(text && url){
-                card.sections.push({widgets:[{buttons:[{textButton:{text,onClick:{openLink:{url}}}}]}]});
-            }
+function renderPreview(payload=buildPayload(), target=previewEl){
+  target.innerHTML='';
+  if(!payload.cards){
+    target.textContent=payload.text;
+    return;
+  }
+  payload.cards.forEach(card=>{
+    const cardDiv=document.createElement('div'); cardDiv.className='preview-card';
+    if(card.header){
+      const headerDiv=document.createElement('div'); headerDiv.className='card-header';
+      if(card.header.imageUrl){
+        const img=document.createElement('img'); img.src=card.header.imageUrl; headerDiv.appendChild(img);
+      }
+      if(card.header.title) headerDiv.innerHTML+=`<strong>${card.header.title}</strong>`;
+      if(card.header.subtitle) headerDiv.innerHTML+=`<span>${card.header.subtitle}</span>`;
+      cardDiv.appendChild(headerDiv);
+    }
+    if(card.sections){
+      card.sections.forEach(sec=>{
+        const secDiv=document.createElement('div'); secDiv.className='section';
+        sec.widgets.forEach(widget=>{
+          if(widget.textParagraph){ const p=document.createElement('p'); p.textContent=widget.textParagraph.text; secDiv.appendChild(p); }
+          if(widget.image){
+            const img=document.createElement('img'); img.src=widget.image.imageUrl;
+            img.addEventListener('click', ()=>{
+              const current=imagesEl.value.split('\n').map(s=>s.trim()).filter(Boolean);
+              if(!current.includes(img.src)) current.push(img.src);
+              imagesEl.value=current.join('\n'); renderImagesPreview();
+            });
+            secDiv.appendChild(img);
+          }
+          if(widget.buttons) widget.buttons.forEach(btn=>{
+            const a=document.createElement('a'); a.href=btn.textButton.onClick.openLink.url; a.target="_blank"; a.className='action-button';
+            a.textContent=btn.textButton.text; secDiv.appendChild(a);
+          });
         });
-
-        return {cards:[card]};
+        cardDiv.appendChild(secDiv);
+      });
     }
+    target.appendChild(cardDiv);
+  });
+}
 
-    function renderImagesPreview(){
-        imagesPreview.innerHTML='';
-        imagesEl.value.split('\n').map(s=>s.trim()).filter(Boolean).forEach(u=>{
-            const img=document.createElement('img'); img.src=u; img.loading='lazy';
-            imagesPreview.appendChild(img);
-        });
-    }
-    imagesEl.addEventListener('input', renderImagesPreview);
-    renderImagesPreview();
+function saveHistory(payload){
+  const history = JSON.parse(localStorage.getItem('chatHistory')||'[]');
+  const item={ timestamp:Date.now(), type:payload.text?'text':'card', text:payload.text||'', cards:payload.cards||[] };
+  history.unshift(item);
+  localStorage.setItem('chatHistory', JSON.stringify(history.slice(0,50)));
+  renderHistory();
+}
 
-    function renderPreview(payload=buildPayload(), target=previewEl){
-        target.innerHTML='';
-        if(!payload.cards){ target.textContent=payload.text; return; }
-        payload.cards.forEach(card=>{
-            const cardDiv=document.createElement('div'); cardDiv.className='preview-card';
-            if(card.header){
-                const headerDiv=document.createElement('div'); headerDiv.className='card-header';
-                if(card.header.imageUrl){
-                    const img=document.createElement('img'); img.src=card.header.imageUrl; headerDiv.appendChild(img);
-                }
-                if(card.header.title) headerDiv.innerHTML += `<strong>${card.header.title}</strong>`;
-                if(card.header.subtitle) headerDiv.innerHTML += `<span>${card.header.subtitle}</span>`;
-                cardDiv.appendChild(headerDiv);
-            }
-            if(card.sections){
-                card.sections.forEach(section=>{
-                    const secDiv=document.createElement('div'); secDiv.className='section';
-                    section.widgets.forEach(widget=>{
-                        if(widget.textParagraph){ const p=document.createElement('p'); p.textContent=widget.textParagraph.text; secDiv.appendChild(p); }
-                        if(widget.image){
-                            const img=document.createElement('img'); img.src=widget.image.imageUrl;
-                            img.addEventListener('click',()=>{
-                                const current = imagesEl.value.split('\n').map(s=>s.trim()).filter(Boolean);
-                                if(!current.includes(img.src)) current.push(img.src);
-                                imagesEl.value=current.join('\n'); renderImagesPreview();
-                            });
-                            secDiv.appendChild(img);
-                        }
-                        if(widget.buttons){
-                            widget.buttons.forEach(btn=>{
-                                const a=document.createElement('a'); a.href=btn.textButton.onClick.openLink.url;
-                                a.target="_blank"; a.className='action-button'; a.textContent=btn.textButton.text;
-                                secDiv.appendChild(a);
-                            });
-                        }
-                    });
-                    cardDiv.appendChild(secDiv);
-                });
-            }
-            target.appendChild(cardDiv);
-        });
-    }
+function renderHistory(){
+  const history=JSON.parse(localStorage.getItem('chatHistory')||'[]');
+  historyEl.innerHTML='';
+  history.forEach(item=>{
+    const div=document.createElement('div'); div.className='history-item';
+    const tsDiv=document.createElement('div'); tsDiv.className='history-timestamp';
+    tsDiv.textContent=new Date(item.timestamp).toLocaleString();
+    div.appendChild(tsDiv);
+    const previewContainer=document.createElement('div');
+    renderPreview(item, previewContainer);
+    div.appendChild(previewContainer);
+    historyEl.appendChild(div);
+  });
+}
 
-    function saveHistory(payload){
-        const history = JSON.parse(localStorage.getItem('chatHistory')||'[]');
-        const item={timestamp:Date.now(), type:payload.text?'text':'card', text:payload.text||'', cards:payload.cards||[]};
-        history.unshift(item); localStorage.setItem('chatHistory', JSON.stringify(history.slice(0,50)));
-        renderHistory();
-    }
+async function sendToWebhook(payload){
+  const webhookUrl=document.getElementById('webhook').value.trim();
+  if(!webhookUrl){ logEl.textContent='לא להזין Webhook URL!'; return; }
+  console.log('Payload:', payload);
+  logEl.textContent='שולח... (בדוק קונסול לעוד פרטים)\n'+JSON.stringify(payload,null,2);
+  try{
+    const resp=await fetch(webhookUrl,{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
+    const text=await resp.text();
+    if(!resp.ok){ logEl.textContent=`שגיאה HTTP ${resp.status}\nResponse body:\n${text}`; return; }
+    logEl.textContent=`נשלח בהצלחה! HTTP ${resp.status}\nResponse body:\n${text}`;
+  } catch(err){ logEl.textContent='שגיאה בשליחה: '+err.message; console.error(err); }
+}
 
-    function renderHistory(){
-        const history=JSON.parse(localStorage.getItem('chatHistory')||'[]');
-        historyEl.innerHTML='';
-        history.forEach(item=>{
-            const div=document.createElement('div'); div.className='history-item';
-            const tsDiv=document.createElement('div'); tsDiv.className='history-timestamp';
-            tsDiv.textContent=new Date(item.timestamp).toLocaleString(); div.appendChild(tsDiv);
-            const previewContainer=document.createElement('div'); renderPreview(item,previewContainer);
-            div.appendChild(previewContainer); historyEl.appendChild(div);
-        });
-    }
+document.getElementById('build').addEventListener('click',()=>renderPreview());
+document.getElementById('send').addEventListener('click',async ()=>{
+  const payload=buildPayload(); renderPreview(payload); saveHistory(payload); await sendToWebhook(payload);
+  if(document.getElementById('after').value==='clear'){
+    ['plainText','title','subtitle','headerImage','cardText','images','actions'].forEach(id=>document.getElementById(id).value='');
+    renderImagesPreview(); renderPreview();
+  }
+});
 
-    function sendToWebhook(payload){
-        const webhookUrl = document.getElementById('webhook').value.trim();
-        if(!webhookUrl){ logEl.textContent='לא להזין Webhook URL!'; return; }
-        fetch(webhookUrl,{method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)})
-        .then(response=>{ if(!response.ok) throw new Error('HTTP error '+response.status); logEl.textContent='נשלח בהצלחה!'; })
-        .catch(err=>{ logEl.textContent='שגיאה בשליחה: '+err.message; });
-    }
-
-    document.getElementById('build').addEventListener('click',()=>renderPreview());
-    document.getElementById('send').addEventListener('click',()=>{
-        const payload=buildPayload(); saveHistory(payload); sendToWebhook(payload);
-        if(document.getElementById('after').value==='clear'){
-            document.getElementById('plainText').value=''; document.getElementById('title').value='';
-            document.getElementById('subtitle').value=''; document.getElementById('headerImage').value='';
-            document.getElementById('cardText').value=''; document.getElementById('images').value='';
-            document.getElementById('actions').value=''; renderImagesPreview(); renderPreview();
-        }
-    });
-
-    renderHistory();
+renderHistory();
 });
 </script>
 </body>
