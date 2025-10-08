@@ -3,24 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>מערכת מודעות ל-Google Chat</title>
+<title>משגר הודעות ל-Google Chat</title>
 
-<!-- ---------- Favicon / Share image (your GitHub raw image) ---------- -->
-<!-- raw.githubusercontent.com link (direct raw image) -->
+<!-- Favicon / Share image (your GitHub raw image) -->
 <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/shey3132/-22/main/%D7%A4%D7%A8%D7%95%D7%A4%D7%99%D7%9C%20%D7%93%D7%99%D7%92%D7%99%D7%98%D7%9C%D7%99%20%D7%A2%D7%9D%20%D7%A8%D7%A9%D7%AA%20%D7%A4%D7%A2%D7%95%D7%9C%D7%94.png">
-<link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/shey3132/-22/main/%D7%A4%D7%A8%D7%95%D7%A4%D7%99%D7%9C%20%D7%93%D7%99%D7%92%D7%99%D7%98%D7%9C%D7%99%20%D7%A2%D7%9D%20%D7%A8%D7%A9%D7%AA%20%D7%A4%D7%A2%D7%95%D7%9C%D7%94.png">
-
-<!-- Open Graph / Twitter Card (for link previews when משתפים את ה-URL) -->
-<meta property="og:type" content="website">
-<meta property="og:title" content="משגר הודעות ל-Google Chat">
-<meta property="og:description" content="כלי לשליחת הודעות וכרטיסים ל-Google Chat">
 <meta property="og:image" content="https://raw.githubusercontent.com/shey3132/-22/main/%D7%A4%D7%A8%D7%95%D7%A4%D7%99%D7%9C%20%D7%93%D7%99%D7%92%D7%99%D7%98%D7%9C%D7%99%20%D7%A2%D7%9D%20%D7%A8%D7%A9%D7%AA%20%D7%A4%D7%A2%D7%95%D7%9C%D7%94.png">
-
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="משגר הודעות ל-Google Chat">
-<meta name="twitter:description" content="כלי לשליחת הודעות וכרטיסים ל-Google Chat">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/shey3132/-22/main/%D7%A4%D7%A8%D7%95%D7%A4%D7%99%D7%9C%20%D7%93%D7%99%D7%92%D7%99%D7%98%D7%9C%D7%99%20%D7%A2%D7%9D%20%D7%A8%D7%A9%D7%AA%20%D7%A4%D7%A2%D7%95%D7%9C%D7%94.png">
-<!-- ------------------------------------------------------------------- -->
 
 <style>
 html, body { height: 100%; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; width: 100%; overflow: hidden; }
@@ -32,15 +19,10 @@ label { display:block; margin-top:14px; font-weight:600; color:#374151; }
 input[type=text], textarea, select { width:100%; padding:10px 14px; margin-top:6px; border:1px solid #cbd5e1; border-radius:10px; font-size:15px; background:#f9fafb; transition:border 0.2s; }
 input[type=text]:focus, textarea:focus, select:focus { border-color:#3b82f6; outline:none; }
 textarea { min-height:100px; resize:vertical; }
-.row { display:flex; gap:12px; }
-.col { flex:1; }
 button { margin-top:14px; padding:12px 18px; border-radius:12px; border:0; background:#3b82f6; color:white; font-weight:700; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,0.15); transition: background 0.2s, transform 0.1s; }
 button:hover { background:#2563eb; transform:translateY(-1px); }
-.muted { color:#6b7280; font-size:13px; }
 .images-list { margin-top:10px; display:flex; gap:10px; flex-wrap:wrap; }
 .images-list img { width:120px; height:80px; object-fit:cover; border-radius:8px; border:1px solid #d1d5db; cursor:pointer; }
-.flex-between { display:flex; justify-content:space-between; align-items:center; margin-top:16px; }
-.small { font-size:13px; color:#6b7280; }
 .preview-card { border:1px solid #e5e7eb; border-radius:12px; padding:0; margin-top:14px; background:#fefefe; overflow:hidden; width:100%; box-shadow:0 2px 10px rgba(0,0,0,0.08); }
 .card-header { background:#f3f4f6; padding:14px 16px; }
 .card-header strong { font-size:17px; display:block; color:#111827; }
@@ -57,6 +39,7 @@ button:hover { background:#2563eb; transform:translateY(-1px); }
 .history-item:hover { transform:translateY(-2px); }
 .history-timestamp { font-size:13px; color:#4b5563; margin-bottom:6px; font-weight:500; }
 #preview { flex: 1; overflow:auto; border:1px solid #e5e7eb; border-radius:12px; padding:10px; margin-top:12px; min-height: 200px; }
+pre#log{background:#111827;color:#e6eef8;padding:12px;border-radius:8px;height:160px;overflow:auto}
 </style>
 </head>
 <body>
@@ -137,6 +120,20 @@ document.addEventListener('DOMContentLoaded', ()=>{
     modeEl.addEventListener('change', updateVisibility);
     updateVisibility();
 
+    // convert github blob URLs to raw.githubusercontent URLs
+    function githubBlobToRaw(url) {
+        if (!url) return url;
+        try {
+            if (url.includes('raw.githubusercontent.com')) return url;
+            if (!url.includes('github.com')) return url;
+            // handle common patterns
+            // replace github.com/user/repo/blob/branch/path -> raw.githubusercontent.com/user/repo/branch/path
+            return url.replace('https://github.com/', 'https://raw.githubusercontent.com/').replace('/blob/', '/').replace('?raw=true','');
+        } catch (e) {
+            return url;
+        }
+    }
+
     function buildPayload() {
         if (modeEl.value === 'text') {
             return { text: document.getElementById('plainText').value.trim() || ' ' };
@@ -144,13 +141,13 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
         const title = document.getElementById('title').value.trim();
         const subtitle = document.getElementById('subtitle').value.trim();
-        const headerImage = document.getElementById('headerImage').value.trim();
+        const headerInput = document.getElementById('headerImage').value.trim();
+        const headerImage = githubBlobToRaw(headerInput);
         const cardText = document.getElementById('cardText').value.trim();
-        const imagesRaw = imagesEl.value.split('\n').map(s => s.trim()).filter(Boolean);
+        const imagesRaw = imagesEl.value.split('\n').map(s => s.trim()).filter(Boolean).map(githubBlobToRaw);
         const actionsRaw = actionsEl.value.split('\n').map(s => s.trim()).filter(Boolean);
 
         const card = {};
-
         if (title || subtitle || headerImage) {
             card.header = {};
             if (title) card.header.title = title;
@@ -159,41 +156,32 @@ document.addEventListener('DOMContentLoaded', ()=>{
         }
 
         const widgets = [];
+        if (cardText) widgets.push({ textParagraph: { text: cardText } });
+        imagesRaw.forEach(u => widgets.push({ image: { imageUrl: u } }));
 
-        if (cardText) {
-            widgets.push({ textParagraph: { text: cardText } });
-        }
-
-        imagesRaw.forEach(imgUrl => {
-            widgets.push({ image: { imageUrl: imgUrl } });
-        });
-
-        card.sections = [];
-        if (widgets.length) {
-            card.sections.push({ widgets });
-        }
+        card.sections = widgets.length ? [{ widgets }] : [];
 
         actionsRaw.forEach(line => {
             const [text, url] = line.split('|').map(s => s.trim());
             if (text && url) {
-                card.sections.push({
-                    widgets: [
-                        { buttons: [{ textButton: { text, onClick: { openLink: { url } } } }] }
-                    ]
-                });
+                card.sections.push({ widgets: [{ buttons: [{ textButton: { text, onClick: { openLink: { url } } } }] }] });
             }
         });
 
-        return { cards: [card] };
+        // show final image URLs in log for debugging
+        const finalHeader = card.header && card.header.imageUrl ? card.header.imageUrl : '(none)';
+        const finalImages = imagesRaw.length ? imagesRaw.join('\n') : '(none)';
+        logEl.textContent = 'Final header image URL:\n' + finalHeader + '\n\nFinal image URLs:\n' + finalImages + '\n\nBuilding payload...';
+
+        const payload = { cards: [card] };
+        console.log('Built payload:', payload);
+        return payload;
     }
 
-    function renderImagesPreview() {
-        imagesPreview.innerHTML = '';
-        imagesEl.value.split('\n').map(s => s.trim()).filter(Boolean).forEach(u=>{
-            const img=document.createElement('img');
-            img.src=u;
-            img.loading='lazy';
-            imagesPreview.appendChild(img);
+    function renderImagesPreview(){
+        imagesPreview.innerHTML='';
+        imagesEl.value.split('\n').map(s=>s.trim()).filter(Boolean).forEach(u=>{
+            const img=document.createElement('img'); img.src=u; img.loading='lazy'; imagesPreview.appendChild(img);
         });
     }
     imagesEl.addEventListener('input', renderImagesPreview);
@@ -201,120 +189,63 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
     function renderPreview(payload=buildPayload(), target=previewEl) {
         target.innerHTML = '';
-        if (!payload.cards) {
-            target.textContent = payload.text;
-            return;
-        }
-
+        if (!payload.cards) { target.textContent = payload.text; return; }
         payload.cards.forEach(card => {
-            const cardDiv=document.createElement('div');
-            cardDiv.className='preview-card';
-
+            const cardDiv=document.createElement('div'); cardDiv.className='preview-card';
             if (card.header) {
-                const headerDiv=document.createElement('div');
-                headerDiv.className='card-header';
-
-                if (card.header.imageUrl) {
-                    const img=document.createElement('img');
-                    img.src=card.header.imageUrl;
-                    headerDiv.appendChild(img);
-                }
-
-                if (card.header.title) {
-                    const titleEl=document.createElement('strong');
-                    titleEl.textContent=card.header.title;
-                    headerDiv.appendChild(titleEl);
-                }
-
-                if (card.header.subtitle) {
-                    const subtitleEl=document.createElement('span');
-                    subtitleEl.textContent=card.header.subtitle;
-                    headerDiv.appendChild(subtitleEl);
-                }
-
+                const headerDiv=document.createElement('div'); headerDiv.className='card-header';
+                if (card.header.imageUrl) { const img=document.createElement('img'); img.src=card.header.imageUrl; headerDiv.appendChild(img); }
+                if (card.header.title) headerDiv.innerHTML += `<strong>${card.header.title}</strong>`;
+                if (card.header.subtitle) headerDiv.innerHTML += `<span>${card.header.subtitle}</span>`;
                 cardDiv.appendChild(headerDiv);
             }
-
             if (card.sections) {
                 card.sections.forEach(section=>{
-                    const secDiv=document.createElement('div');
-                    secDiv.className='section';
-
+                    const secDiv=document.createElement('div'); secDiv.className='section';
                     section.widgets.forEach(widget=>{
-                        if (widget.textParagraph) {
-                            const p=document.createElement('p');
-                            p.textContent=widget.textParagraph.text;
-                            secDiv.appendChild(p);
-                        }
-
-                        if (widget.image) {
-                            const img=document.createElement('img');
-                            img.src=widget.image.imageUrl;
-                            secDiv.appendChild(img);
-                        }
-
-                        if (widget.buttons) {
-                            widget.buttons.forEach(btn=>{
-                                const a=document.createElement('a');
-                                a.href=btn.textButton.onClick.openLink.url;
-                                a.target="_blank";
-                                a.className='action-button';
-                                a.textContent=btn.textButton.text;
-                                secDiv.appendChild(a);
-                            });
-                        }
+                        if (widget.textParagraph) { const p=document.createElement('p'); p.textContent=widget.textParagraph.text; secDiv.appendChild(p); }
+                        if (widget.image) { const img=document.createElement('img'); img.src=widget.image.imageUrl; secDiv.appendChild(img); }
+                        if (widget.buttons) widget.buttons.forEach(btn=>{ const a=document.createElement('a'); a.href=btn.textButton.onClick.openLink.url; a.target='_blank'; a.className='action-button'; a.textContent=btn.textButton.text; secDiv.appendChild(a); });
                     });
-
                     cardDiv.appendChild(secDiv);
                 });
             }
-
             target.appendChild(cardDiv);
         });
     }
 
-    function saveHistory(payload){
+    function saveHistory(payload) {
         const history = JSON.parse(localStorage.getItem('chatHistory')||'[]');
-        const item={timestamp:Date.now(), type:payload.text?'text':'card', text:payload.text||'', cards:payload.cards||[]};
-        history.unshift(item);
-        localStorage.setItem('chatHistory', JSON.stringify(history.slice(0,50)));
+        const item = { timestamp: Date.now(), type: payload.text ? 'text' : 'card', text: payload.text || '', cards: payload.cards || [] };
+        history.unshift(item); localStorage.setItem('chatHistory', JSON.stringify(history.slice(0,50)));
         renderHistory();
     }
 
     function renderHistory(){
         const history=JSON.parse(localStorage.getItem('chatHistory')||'[]');
         historyEl.innerHTML='';
-        history.forEach(item=>{
-            const div=document.createElement('div'); div.className='history-item';
-            const tsDiv=document.createElement('div'); tsDiv.className='history-timestamp';
-            tsDiv.textContent=new Date(item.timestamp).toLocaleString(); div.appendChild(tsDiv);
-            const previewContainer=document.createElement('div'); renderPreview(item, previewContainer);
-            div.appendChild(previewContainer); historyEl.appendChild(div);
-        });
+        history.forEach(item=>{ const div=document.createElement('div'); div.className='history-item'; const tsDiv=document.createElement('div'); tsDiv.className='history-timestamp'; tsDiv.textContent=new Date(item.timestamp).toLocaleString(); div.appendChild(tsDiv); const previewContainer=document.createElement('div'); renderPreview(item, previewContainer); div.appendChild(previewContainer); historyEl.appendChild(div); });
     }
 
     async function sendToWebhook(payload){
-        const webhookUrl=document.getElementById('webhook').value.trim();
+        const webhookUrl = document.getElementById('webhook').value.trim();
         if(!webhookUrl){ logEl.textContent='לא להזין Webhook URL!'; return; }
-        fetch(webhookUrl,{
-            method:'POST',
-            headers:{'Content-Type':'application/json'},
-            body: JSON.stringify(payload)
-        })
-        .then(response => { if(!response.ok) throw new Error('HTTP error ' + response.status); logEl.textContent = 'נשלח בהצלחה!'; })
-        .catch(err => { logEl.textContent = 'שגיאה בשליחה: ' + err.message; });
+        console.log('Sending payload:', payload);
+        logEl.textContent = 'Sending to webhook...\n\n' + JSON.stringify(payload, null, 2) + '\n\n(also check console)';
+        try{
+            const resp = await fetch(webhookUrl, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+            const text = await resp.text();
+            if(!resp.ok){ logEl.textContent = `שגיאה HTTP ${resp.status}\nResponse body:\n${text}`; return; }
+            logEl.textContent = `נשלח בהצלחה! HTTP ${resp.status}\nResponse body:\n${text}`;
+        } catch(err){ console.error(err); logEl.textContent = 'שגיאה בשליחה: ' + err.message; }
     }
 
-    document.getElementById('build').addEventListener('click',()=>renderPreview());
-    document.getElementById('send').addEventListener('click',()=>{
-        const payload = buildPayload();
-        saveHistory(payload);
-        sendToWebhook(payload);
-        if(document.getElementById('after').value==='clear'){
-            document.getElementById('plainText').value=''; document.getElementById('title').value='';
-            document.getElementById('subtitle').value=''; document.getElementById('headerImage').value='';
-            document.getElementById('cardText').value=''; document.getElementById('images').value='';
-            document.getElementById('actions').value=''; renderImagesPreview(); renderPreview();
+    document.getElementById('build').addEventListener('click', ()=> renderPreview());
+    document.getElementById('send').addEventListener('click', async ()=>{
+        const payload = buildPayload(); renderPreview(payload); saveHistory(payload); await sendToWebhook(payload);
+        if(document.getElementById('after').value === 'clear'){
+            ['plainText','title','subtitle','headerImage','cardText','images','actions'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+            renderImagesPreview(); renderPreview();
         }
     });
 
